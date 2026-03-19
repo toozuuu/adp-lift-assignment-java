@@ -12,7 +12,7 @@ public class Person extends Thread implements Serializable, ElevatorGlobalValues
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private int id = 1;
+	private int personId = 1;
 
 	private boolean isMove = false;
 
@@ -23,7 +23,7 @@ public class Person extends Thread implements Serializable, ElevatorGlobalValues
 	public Person(int identifier, Location initialLocation) {
 		super();
 
-		setId(identifier);
+		setPersonId(identifier);
 		location = initialLocation;
 		isMove = true;
 	}
@@ -152,7 +152,11 @@ public class Person extends Thread implements Serializable, ElevatorGlobalValues
 
 	private void sendPersonMoveEvent(int eventType) {
 
-		PersonMoveEvent event = new PersonMoveEvent(this, getLocation(), getId());
+		if (personMoveListener == null) {
+			return;
+		}
+
+		PersonMoveEvent event = new PersonMoveEvent(this, getLocation(), getPersonId());
 
 		switch (eventType) {
 
@@ -185,12 +189,12 @@ public class Person extends Thread implements Serializable, ElevatorGlobalValues
 		}
 	}
 
-	public long getId() {
-		return id;
+	public int getPersonId() {
+		return personId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPersonId(int id) {
+		this.personId = id;
 	}
 
 }
